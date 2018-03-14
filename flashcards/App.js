@@ -2,11 +2,14 @@ import React, {Component} from 'react'
 import { createStore } from 'redux'
 import { Provider } from 'react-redux'
 import { StyleSheet, View, StatusBar } from 'react-native'
-import { TabNavigator } from 'react-navigation'
+import { TabNavigator, StackNavigator } from 'react-navigation'
 import { Constants } from 'expo'
 
-import Packs from './components/Packs'
-import NewPack from './components/NewPack'
+import Decks from './components/Decks'
+import NewDeck from './components/NewDeck'
+import Deck from './components/Deck'
+import Quiz from './components/Quiz'
+import NewQuestion from './components/NewQuestion'
 
 import reducer from './reducers'
 import { darkPrimaryColor, defaultPrimaryColor, textPrimaryColor } from './utils/colors'
@@ -20,14 +23,14 @@ function FlashcardsStatusBar ({ backgroundColor, ...props }) {
 }
 
 const Tabs = TabNavigator({
-  Packs: {
-    screen: Packs,
+  Decks: {
+    screen: Decks,
     navigationOptions: {
       tabBarLabel: 'Baralhos'
     }
   },
   NewPack: {
-    screen: NewPack,
+    screen: NewDeck,
     navigationOptions: {
       tabBarLabel: 'Novo Baralho'
     }
@@ -52,6 +55,38 @@ const Tabs = TabNavigator({
   }
 })
 
+const MainNavegator = StackNavigator({
+  Home: {
+    screen: Tabs
+  },
+  Deck: {
+    screen: Deck,
+    navigationOptions: {
+      headerTintColor: textPrimaryColor,
+      headerStyle: {
+        backgroundColor: defaultPrimaryColor
+      }
+    }
+  },
+  Quiz: {
+    screen: Quiz,
+    navigationOptions: {
+      headerTintColor: textPrimaryColor,
+      headerStyle: {
+        backgroundColor: defaultPrimaryColor
+      }
+    }
+  },
+  NewQuestion: {
+    screen: NewQuestion,
+    navigationOptions: {
+      headerTintColor: textPrimaryColor,
+      headerStyle: {
+        backgroundColor: defaultPrimaryColor
+      }
+    }
+  }
+})
 
 const store = createStore(reducer)
 
@@ -62,7 +97,7 @@ export default class App extends Component {
       <Provider store={store}>
         <View style={{flex: 1}}>
           <FlashcardsStatusBar backgroundColor={darkPrimaryColor} barStyle='light-content' />
-          <Tabs />
+          <MainNavegator />
         </View>        
       </Provider>
     )
