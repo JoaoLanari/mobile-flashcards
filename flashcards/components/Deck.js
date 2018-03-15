@@ -25,7 +25,7 @@ class Deck extends Component {
           {this.props.decks.filter(deck => deck.title === this.props.navigation.state.params.title)
             .map((deck, key) => (
               <View key={key} style={styles.headerContainer} >
-                <Text style={{color:textPrimaryColor, fontSize: 50}}>{deck.title}</Text>
+                <Text style={{ color: textPrimaryColor, fontSize: 50 }}>{deck.title}</Text>
                 <View style={styles.cardNumberContainer} >
                   <Text style={{ color: primaryTextColor, fontSize: 35 }}>{deck.questions.length}</Text>
                   <Text style={{ color: secondaryTextColor, fontSize: 15 }}>
@@ -37,24 +37,31 @@ class Deck extends Component {
               </View>
             ))}
           <View style={styles.buttonsContainer} >
-            <TouchableOpacity 
+            <TouchableOpacity
               style={styles.button}
               onPress={() => this.props.navigation.navigate(
-              'NewQuestion',
-              { title: this.props.navigation.state.params.title }
-            )} >
-              <Text style={{color: textPrimaryColor, textAlign: 'center'}}>NOVA CARTA</Text>
+                'NewQuestion',
+                { title: this.props.navigation.state.params.title }
+              )} >
+              <Text style={{ color: textPrimaryColor, textAlign: 'center' }}>NOVA CARTA</Text>
             </TouchableOpacity>
-            <TouchableOpacity 
+            <TouchableOpacity
               style={styles.button}
               onPress={() => this.props.navigation.navigate(
-              'Quiz',
-              { title: this.props.navigation.state.params.title }
-            )} >
-              <Text style={{color: textPrimaryColor, textAlign: 'center'}}>COMEÇAR O QUIZ</Text>
+                'Quiz',
+                { title: this.props.navigation.state.params.title }
+              )} >
+              <Text style={{ color: textPrimaryColor, textAlign: 'center' }}>COMEÇAR O QUIZ</Text>
             </TouchableOpacity>
           </View>
         </View>
+        <TouchableOpacity
+          style={[styles.button, {width: '40%', }]}
+          onPress={() => this.props.navigation.navigate(
+            'Home'
+          )} >
+          <Text style={{ color: textPrimaryColor, textAlign: 'center' }}>IR PARA HOME</Text>
+        </TouchableOpacity>
       </View>
     )
   }
@@ -64,9 +71,10 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: lightPrimaryColor,
+    alignItems: 'center'
   },
   deckContainer: {
-    flex: 0.75,
+    width: '80%',
     justifyContent: 'space-between',
     alignItems: 'center',
     marginTop: 15,
