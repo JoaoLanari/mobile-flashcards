@@ -27,7 +27,8 @@ class Decks extends Component {
                 {deck.questions.length === 1 
                   ? 'carta'
                   : 'cartas'}
-              </Text>              
+              </Text>
+              <Text>{deck.title}</Text>         
             </View>
           </TouchableOpacity>
         ))}

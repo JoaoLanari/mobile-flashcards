@@ -1,7 +1,10 @@
-import { ADD_PACK, ADD_CARD } from '../actions'
+import _ from 'lodash'
+
+import { ADD_DECK, ADD_CARD } from '../actions'
 
 function flashcards (state = {
   React: {
+    id: 'React',
     title: 'React',
     questions: [
       {
@@ -14,7 +17,8 @@ function flashcards (state = {
       }
     ]
   },
-  JavaScript: {
+  javascript: {
+    id: 'JavaScript',
     title: 'JavaScript',
     questions: [
       {
@@ -24,14 +28,27 @@ function flashcards (state = {
     ]
   }
 }, action) {
-  const { title, id, question, answer, type } = action
+  const { title, id, questionsObj, type } = action
 
   switch (type) {
-    case ADD_PACK :
-      return state
+    case ADD_DECK :
+      return {
+        ...state,
+        [id]: {
+          id: id,
+          title: title,
+          questions: []
+        }
+      }
 
     case ADD_CARD :
-      return state
+      return {
+        ...state,
+          [id]: {
+            ...state[id],
+            questions: questionsObj
+          }
+      }
   
     default:
       return state

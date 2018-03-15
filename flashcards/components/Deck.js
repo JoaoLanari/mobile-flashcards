@@ -20,43 +20,46 @@ class Deck extends Component {
   }
   render() {
     return (
-      <View style={styles.container} >
-        <View style={styles.deckContainer} >
+      <View style={styles.container} >        
           {this.props.decks.filter(deck => deck.title === this.props.navigation.state.params.title)
             .map((deck, key) => (
-              <View key={key} style={styles.headerContainer} >
-                <Text style={{ color: textPrimaryColor, fontSize: 50 }}>{deck.title}</Text>
-                <View style={styles.cardNumberContainer} >
-                  <Text style={{ color: primaryTextColor, fontSize: 35 }}>{deck.questions.length}</Text>
-                  <Text style={{ color: secondaryTextColor, fontSize: 15 }}>
-                    {deck.questions.length === 1
-                      ? 'carta'
-                      : 'cartas'}
-                  </Text>
+              <View style={styles.deckContainer} key={key}>
+                <View style={styles.headerContainer} >
+                  <Text style={{ color: textPrimaryColor, fontSize: 50 }}>{deck.title}</Text>
+                  <View style={styles.cardNumberContainer} >
+                    <Text style={{ color: primaryTextColor, fontSize: 35 }}>{deck.questions.length}</Text>
+                    <Text style={{ color: secondaryTextColor, fontSize: 15 }}>
+                      {deck.questions.length === 1
+                        ? 'carta'
+                        : 'cartas'}
+                    </Text>
+                  </View>
+                </View>
+                <View style={styles.buttonsContainer} >
+                  <TouchableOpacity
+                    style={styles.button}
+                    onPress={() => this.props.navigation.navigate(
+                      'NewQuestion',
+                      {
+                        title: this.props.navigation.state.params.title,
+                        id: deck.id
+                      }
+                    )} >
+                    <Text style={{ color: textPrimaryColor, textAlign: 'center' }}>NOVA CARTA</Text>
+                  </TouchableOpacity>
+                  <TouchableOpacity
+                    style={styles.button}
+                    onPress={() => this.props.navigation.navigate(
+                      'Quiz',
+                      { title: this.props.navigation.state.params.title }
+                    )} >
+                    <Text style={{ color: textPrimaryColor, textAlign: 'center' }}>COMEÇAR O QUIZ</Text>
+                  </TouchableOpacity>
                 </View>
               </View>
             ))}
-          <View style={styles.buttonsContainer} >
-            <TouchableOpacity
-              style={styles.button}
-              onPress={() => this.props.navigation.navigate(
-                'NewQuestion',
-                { title: this.props.navigation.state.params.title }
-              )} >
-              <Text style={{ color: textPrimaryColor, textAlign: 'center' }}>NOVA CARTA</Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              style={styles.button}
-              onPress={() => this.props.navigation.navigate(
-                'Quiz',
-                { title: this.props.navigation.state.params.title }
-              )} >
-              <Text style={{ color: textPrimaryColor, textAlign: 'center' }}>COMEÇAR O QUIZ</Text>
-            </TouchableOpacity>
-          </View>
-        </View>
         <TouchableOpacity
-          style={[styles.button, {width: '40%', }]}
+          style={[styles.button, { width: '40%', }]}
           onPress={() => this.props.navigation.navigate(
             'Home'
           )} >

@@ -1,5 +1,9 @@
 import React, { Component } from 'react'
+import { connect } from 'react-redux'
 import { View, Text, TextInput, TouchableOpacity, StyleSheet } from 'react-native'
+
+import { addDeck } from '../actions'
+
 import {
   lightPrimaryColor,
   dividerColor,
@@ -12,6 +16,18 @@ import {
 
 class NewDeck extends Component {
 
+  state = {
+    title: ''
+  }
+
+  submit() {
+    const title = this.state.title
+    const id = title //tirando carecteresm especiais e espaço
+    this.props.addDeck(id, title)
+    this.setState({title: ''})
+    this.props.navigation.goBack()
+  }
+
   render() {
     return (
       <View style={styles.container} >
@@ -19,8 +35,11 @@ class NewDeck extends Component {
           <Text style={{fontSize: 30, color: textPrimaryColor, textAlign: 'center'}} >
             Insira o NOME do novo baralho no campo abaixo
           </Text>
-          <TextInput style={styles.input} />
-          <TouchableOpacity style={styles.button} >
+          <TextInput value={this.state.title} onChangeText={(text) => this.setState({title: text})} style={styles.input} />
+          <TouchableOpacity 
+            onPress={() => this.submit()}  
+            style={styles.button}
+          >
             <Text style={{color: textPrimaryColor}} >CRIAR BARALHO</Text>
           </TouchableOpacity>
         </View>
@@ -88,4 +107,4 @@ const styles = StyleSheet.create({
 })
 
 
-export default NewDeck
+export default connect(null, {addDeck})(NewDeck)

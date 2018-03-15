@@ -1,18 +1,18 @@
-export const ADD_PACK = 'ADD_PACK'
+export const ADD_DECK = 'ADD_PACK'
 export const ADD_CARD = 'ADD_CARD'
 
-export function addPack (title) {
+export function addDeck (id, title) {
   return {
-    type: ADD_PACK,
+    type: ADD_DECK,
+    id,
     title
   }
 }
 
-export function addCard (id, question, answer) {
+export function addCard (id, questionsObj) {
   return {
     type: ADD_CARD,
     id,
-    question,
-    answer
+    questionsObj
   }
 }

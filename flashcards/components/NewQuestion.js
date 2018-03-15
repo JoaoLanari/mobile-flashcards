@@ -1,5 +1,9 @@
 import React, { Component } from 'react'
+import { connect } from 'react-redux'
 import { View, Text, TextInput, TouchableOpacity, StyleSheet } from 'react-native'
+
+import { addCard } from '../actions'
+
 import {
   lightPrimaryColor,
   dividerColor,
@@ -11,20 +15,47 @@ import {
 } from '../utils/colors'
 
 class NewQuestion extends Component {
+
+  state ={
+    question: '',
+    answer: '',
+    questions: this.props.questions[0]
+  }
+
   static navigationOptions = ({ navigation }) => {
     return {
       title: `Nova Carta: ${navigation.state.params.title}`
     }
   }
+
+  submit(){
+    const id = this.props.navigation.state.params.id
+    const question = this.state.question
+    const answer = this.state.answer
+    const newQuestion = { question: question, answer: answer }
+    const questionsObj = JSON.parse(JSON.stringify(this.state.questions)).concat([newQuestion])
+    this.props.addCard(id, questionsObj)
+    this.setState({question: '', answer: ''})
+    this.props.navigation.goBack()
+  }
+
   render() {
     return (
       <View style={styles.container}>
         <View style={styles.contentContainer}>
           <Text style={{color: textPrimaryColor, fontSize: 20}} >Insira a Pergunta</Text>
-          <TextInput style={styles.input}/>
+          <TextInput
+            value={this.state.question} 
+            onChangeText={(text) => this.setState({question: text})} 
+            style={styles.input}
+          />
           <Text style={{color: textPrimaryColor, fontSize: 20}} >Insira a Resposta</Text>
-          <TextInput style={styles.input}/>
-          <TouchableOpacity style={styles.button}>
+          <TextInput
+            value={this.state.answer} 
+            onChangeText={(text) => this.setState({answer: text})} 
+            style={styles.input}
+          />
+          <TouchableOpacity onPress={() => this.submit()} style={styles.button}>
             <Text style={{color: textPrimaryColor}}>CRIAR CARTA</Text>
           </TouchableOpacity>
         </View>
@@ -91,4 +122,14 @@ const styles = StyleSheet.create({
   }
 })
 
-export default NewQuestion 
+function mapStateToProps(state, { navigation }) {
+  const selectedDeck = navigation.state.params.title
+  const ids = Object.keys(state).map((key) => key)
+  const decks = ids.map((key) => ({ ...state[key] }))
+  const deck = decks.filter(deck => deck.title === selectedDeck)
+  return {
+    questions: deck.map(deck => deck.questions)
+  }
+}
+
+export default connect(mapStateToProps, {addCard})(NewQuestion)
