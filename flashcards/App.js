@@ -12,6 +12,7 @@ import Quiz from './components/Quiz'
 import NewQuestion from './components/NewQuestion'
 
 import reducer from './reducers'
+import { setLocalNotification } from './utils/notification'
 import { darkPrimaryColor, defaultPrimaryColor, textPrimaryColor } from './utils/colors'
 
 function FlashcardsStatusBar ({ backgroundColor, ...props }) {
@@ -92,6 +93,9 @@ const store = createStore(reducer)
 
 
 export default class App extends Component {
+  componentDidMount() {
+    setLocalNotification()
+  }
   render() {
     return (
       <Provider store={store}>

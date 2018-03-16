@@ -1,6 +1,12 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { View, Text, TextInput, TouchableOpacity, StyleSheet } from 'react-native'
+import { 
+  View, 
+  Text, 
+  TextInput, 
+  TouchableOpacity, 
+  StyleSheet 
+} from 'react-native'
 
 import { addDeck } from '../actions'
 
@@ -14,6 +20,8 @@ import {
   darkPrimaryColor
 } from '../utils/colors'
 
+import { createDeck } from '../utils/api'
+
 class NewDeck extends Component {
 
   state = {
@@ -23,9 +31,21 @@ class NewDeck extends Component {
   submit() {
     const title = this.state.title
     const id = title //tirando carecteresm especiais e espaço
+    const deckToStorage = {
+      [id]: {
+        id: id,
+        title: title,
+        questions: []
+      }
+    }    
     this.props.addDeck(id, title)
+    createDeck(deckToStorage)
+
     this.setState({title: ''})
-    this.props.navigation.goBack()
+    this.props.navigation.navigate(
+      'Deck',
+      {title: title}
+    )
   }
 
   render() {
@@ -35,7 +55,11 @@ class NewDeck extends Component {
           <Text style={{fontSize: 30, color: textPrimaryColor, textAlign: 'center'}} >
             Insira o NOME do novo baralho no campo abaixo
           </Text>
-          <TextInput value={this.state.title} onChangeText={(text) => this.setState({title: text})} style={styles.input} />
+          <TextInput 
+            value={this.state.title} 
+            onChangeText={(text) => this.setState({title: text})} 
+            style={styles.input} 
+          />
           <TouchableOpacity 
             onPress={() => this.submit()}  
             style={styles.button}

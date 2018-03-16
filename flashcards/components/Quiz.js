@@ -1,6 +1,13 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { View, Text, TouchableOpacity, StyleSheet, ScrollView } from 'react-native'
+import { 
+  View, 
+  Text, 
+  TouchableOpacity, 
+  StyleSheet, 
+  ScrollView 
+} from 'react-native'
+
 import {
   lightPrimaryColor,
   dividerColor,
@@ -10,6 +17,7 @@ import {
   secondaryTextColor,
   darkPrimaryColor
 } from '../utils/colors'
+import { clearLocalNotification, setLocalNotification } from '../utils/notification'
 
 class Quiz extends Component {
 
@@ -44,6 +52,17 @@ class Quiz extends Component {
       correctAnswers: 0,
       showAnswer: false,
     })
+    clearLocalNotification()
+    setLocalNotification()
+  }
+
+  finish() {
+    clearLocalNotification()
+    setLocalNotification()
+    this.props.navigation.navigate(
+      'Deck',
+      { title: this.props.navigation.state.params.title }
+    )
   }
 
   render() {
@@ -52,7 +71,9 @@ class Quiz extends Component {
         {(this.state.showAnswer === false && (this.state.question <= this.props.questions[0].length)) && (
           <View style={styles.quizContainer}>
             <View style={styles.headerContainer}>
-              <Text style={{ color: secondaryTextColor }}>Questão: {this.state.question}</Text>
+              <Text style={{ color: secondaryTextColor }}>
+                Faltam {(this.state.totalQuestionsNumber - this.state.question) + 1} questões
+              </Text>
               <Text style={{ color: secondaryTextColor }} >
                 Acertos: {this.state.correctAnswers}/{this.state.totalQuestionsNumber} ou {this.state.correctAnswers / this.state.totalQuestionsNumber * 100}%
               </Text>
@@ -76,14 +97,18 @@ class Quiz extends Component {
         {(this.state.showAnswer === true && (this.state.question <= this.props.questions[0].length)) && (
           <View style={styles.quizContainer}>
             <View style={styles.headerContainer}>
-              <Text style={{ color: secondaryTextColor }}>Questão: {this.state.question}</Text>
+              <Text style={{ color: secondaryTextColor }}>
+                Faltam {(this.state.totalQuestionsNumber - this.state.question) + 1} questões
+              </Text>
               <Text style={{ color: secondaryTextColor }} >
                 Acertos: {this.state.correctAnswers}/{this.state.totalQuestionsNumber} ou {this.state.correctAnswers / this.state.totalQuestionsNumber * 100}%
               </Text>
             </View>
             <View style={styles.questionAndAnswer}>
               <Text style={{color: textPrimaryColor, fontSize: 15}}>Resposta</Text>
-              <Text style={{color: textPrimaryColor, fontSize: 25, textAlign: 'center'}}>{this.props.questions[0][this.state.question - 1].answer}</Text>
+              <Text style={{color: textPrimaryColor, fontSize: 25, textAlign: 'center'}}>
+                {this.props.questions[0][this.state.question - 1].answer}
+              </Text>
             </View>
             <View style={styles.buttonsContainer} >
               <TouchableOpacity style={[styles.button, {marginBottom: 15}]}>
@@ -123,10 +148,7 @@ class Quiz extends Component {
                 </Text>
               </TouchableOpacity>
               <TouchableOpacity style={styles.button}>
-                <Text onPress={() => this.props.navigation.navigate(
-                  'Deck',
-                  { title: this.props.navigation.state.params.title }
-                )} 
+                <Text onPress={() => this.finish()} 
                   style={{color: textPrimaryColor, textAlign: 'center'}}
                 >
                   VOLTAR AO BARALHO

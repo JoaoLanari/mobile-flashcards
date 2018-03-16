@@ -1,6 +1,11 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { View, Text, TouchableOpacity, StyleSheet } from 'react-native'
+import { 
+  View, 
+  Text, 
+  TouchableOpacity, 
+  StyleSheet, 
+  Animated } from 'react-native'
 import {
   lightPrimaryColor,
   dividerColor,
@@ -13,14 +18,26 @@ import {
 
 
 class Deck extends Component {
+
+  state = {
+    opacity: new Animated.Value(0)
+  }
+
   static navigationOptions = ({ navigation }) => {
     return {
       title: navigation.state.params.title
     }
   }
+
+  componentDidMount() {
+    const { opacity } = this.state
+    Animated.timing(opacity, { toValue: 1, timing: 1500 }).start()
+  }
+
   render() {
+    const { opacity } = this.state
     return (
-      <View style={styles.container} >        
+        <Animated.View style={[styles.container, { opacity }]} >
           {this.props.decks.filter(deck => deck.title === this.props.navigation.state.params.title)
             .map((deck, key) => (
               <View style={styles.deckContainer} key={key}>
@@ -58,14 +75,14 @@ class Deck extends Component {
                 </View>
               </View>
             ))}
-        <TouchableOpacity
-          style={[styles.button, { width: '40%', }]}
-          onPress={() => this.props.navigation.navigate(
-            'Home'
-          )} >
-          <Text style={{ color: textPrimaryColor, textAlign: 'center' }}>IR PARA HOME</Text>
-        </TouchableOpacity>
-      </View>
+          <TouchableOpacity
+            style={[styles.button, { width: '40%', }]}
+            onPress={() => this.props.navigation.navigate(
+              'Home'
+            )} >
+            <Text style={{ color: textPrimaryColor, textAlign: 'center' }}>IR PARA HOME</Text>
+          </TouchableOpacity>
+        </Animated.View>
     )
   }
 }

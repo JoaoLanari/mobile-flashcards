@@ -1,6 +1,12 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { View, Text, TextInput, TouchableOpacity, StyleSheet } from 'react-native'
+import { 
+  View, 
+  Text, 
+  TextInput, 
+  TouchableOpacity, 
+  StyleSheet 
+} from 'react-native'
 
 import { addCard } from '../actions'
 
@@ -13,6 +19,7 @@ import {
   secondaryTextColor,
   darkPrimaryColor
 } from '../utils/colors'
+import { createQuestion } from '../utils/api'
 
 class NewQuestion extends Component {
 
@@ -34,7 +41,10 @@ class NewQuestion extends Component {
     const answer = this.state.answer
     const newQuestion = { question: question, answer: answer }
     const questionsObj = JSON.parse(JSON.stringify(this.state.questions)).concat([newQuestion])
+    
     this.props.addCard(id, questionsObj)
+    createQuestion(id, questionsObj)
+
     this.setState({question: '', answer: ''})
     this.props.navigation.goBack()
   }
@@ -43,13 +53,17 @@ class NewQuestion extends Component {
     return (
       <View style={styles.container}>
         <View style={styles.contentContainer}>
-          <Text style={{color: textPrimaryColor, fontSize: 20}} >Insira a Pergunta</Text>
+          <Text style={{color: textPrimaryColor, fontSize: 20}} >
+            Insira a Pergunta
+          </Text>
           <TextInput
             value={this.state.question} 
             onChangeText={(text) => this.setState({question: text})} 
             style={styles.input}
           />
-          <Text style={{color: textPrimaryColor, fontSize: 20}} >Insira a Resposta</Text>
+          <Text style={{color: textPrimaryColor, fontSize: 20}} >
+            Insira a Resposta
+          </Text>
           <TextInput
             value={this.state.answer} 
             onChangeText={(text) => this.setState({answer: text})} 
